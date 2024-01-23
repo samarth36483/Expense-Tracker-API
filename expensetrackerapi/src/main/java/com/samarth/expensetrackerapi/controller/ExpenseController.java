@@ -2,6 +2,7 @@ package com.samarth.expensetrackerapi.controller;
 
 import com.samarth.expensetrackerapi.models.Expense;
 import com.samarth.expensetrackerapi.service.ExpenseService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +41,7 @@ public class ExpenseController {
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/expenses")
-    public Expense saveExpense(@RequestBody Expense expense){
+    public Expense saveExpense(@Valid @RequestBody Expense expense){
         return expenseService.saveExpense(expense);
     }
 

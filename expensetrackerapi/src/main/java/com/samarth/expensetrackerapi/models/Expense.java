@@ -1,6 +1,8 @@
 package com.samarth.expensetrackerapi.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,15 +23,18 @@ public class Expense {
     private long id;
 
     @Column(name = "expense_name")
+    @NotBlank(message = "Name field can not be empty")
     private String name;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "expense_amount")
+    @NotNull(message = "Amount field can not be empty")
     private double amount;
 
     @Column(name = "category")
+    @NotBlank(message = "Category field can not be empty")
     private String category;
 
     @Column
