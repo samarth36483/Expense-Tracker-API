@@ -3,6 +3,8 @@ package com.samarth.expensetrackerapi.controller;
 import com.samarth.expensetrackerapi.models.Expense;
 import com.samarth.expensetrackerapi.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +18,8 @@ public class ExpenseController {
 
     @ResponseStatus(value = HttpStatus.FOUND)
     @GetMapping("/expenses")
-    public List<Expense> getAllExpense(){
-        List<Expense> list = expenseService.getAllExpenses();
+    public List<Expense> getAllExpense(Pageable page){
+        List<Expense> list = expenseService.getAllExpenses(page).toList();
         return list;
     }
 

@@ -3,6 +3,8 @@ package com.samarth.expensetrackerapi.service;
 import com.samarth.expensetrackerapi.models.Expense;
 import com.samarth.expensetrackerapi.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +16,10 @@ public class ExpenseServiceImpl implements ExpenseService {
     private ExpenseRepository expenseRepository;
 
     @Override
-    public List<Expense> getAllExpenses() {
+    public Page<Expense> getAllExpenses(Pageable page) {
         //List<Expense> list = expenseRepository.findAll();
         // since findAll() method returns List of objects
-        return expenseRepository.findAll();
+        return expenseRepository.findAll(page);
     }
 
     @Override
