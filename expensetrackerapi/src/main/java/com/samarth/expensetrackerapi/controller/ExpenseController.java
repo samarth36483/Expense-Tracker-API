@@ -33,7 +33,7 @@ public class ExpenseController {
         return expense;
     }
 
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @ResponseStatus(value = HttpStatus.OK)
     @DeleteMapping("/{id}")
     public String deleteExpenseById(@PathVariable Long id){
         return expenseService.deleteById(id);

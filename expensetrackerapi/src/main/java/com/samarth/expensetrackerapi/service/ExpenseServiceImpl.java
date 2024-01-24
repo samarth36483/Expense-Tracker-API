@@ -1,6 +1,6 @@
 package com.samarth.expensetrackerapi.service;
 
-import com.samarth.expensetrackerapi.exceptions.ExpenseNotFoundException;
+import com.samarth.expensetrackerapi.exceptions.ResourceNotFoundException;
 import com.samarth.expensetrackerapi.models.Expense;
 import com.samarth.expensetrackerapi.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +29,13 @@ public class ExpenseServiceImpl implements ExpenseService {
         Optional<Expense> expense = expenseRepository.findById(id);
         if(!expense.isEmpty())
             return expense.get();
-        throw new ExpenseNotFoundException("No expense found with id " + id);
+        throw new ResourceNotFoundException("No expense found with id " + id);
     }
 
     @Override
     public String deleteById(Long id) {
-        expenseRepository.deleteById(id);
+        Expense expense = getExpenseById(id);
+        expenseRepository.delete(expense);
         return "deleted successfully";
     }
 

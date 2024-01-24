@@ -9,8 +9,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +17,8 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(ExpenseNotFoundException.class)
-    public ResponseEntity<ErrorObject> handleExpenseNotFoundException(ExpenseNotFoundException ex, WebRequest request){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorObject> handleExpenseNotFoundException(ResourceNotFoundException ex, WebRequest request){
         ErrorObject errorObject = new ErrorObject();
         errorObject.setStatuscode(HttpStatus.NOT_FOUND.value());
         errorObject.setMessage(ex.getMessage());
@@ -65,5 +63,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("message", errors);
 
         return new ResponseEntity<Object>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ErrorObject> handleUserAlreadyExistsException(UserAlreadyExistsException ex,
+                                                                        WebRequest request){
+        ErrorObject error = new ErrorObject();
+        error.setStatuscode(HttpStatus.CONFLICT.value());
+        error.setMessage(ex.getMessage());
+        error.setTimestamp(new Date());
+
+        return new ResponseEntity<ErrorObject>(error, HttpStatus.CONFLICT);
     }
 }
