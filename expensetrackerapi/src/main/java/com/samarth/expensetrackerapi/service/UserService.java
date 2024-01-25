@@ -7,4 +7,8 @@ public interface UserService {
     User addUser(UserDTO user);
 
     User readUser(Long id);
+
+    User updateUser(UserDTO dto, long id);
+
+    void deletUser(long id);
 }

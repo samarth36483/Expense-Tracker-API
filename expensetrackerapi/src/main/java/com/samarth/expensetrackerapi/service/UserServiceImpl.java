@@ -8,6 +8,8 @@ import com.samarth.expensetrackerapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -28,5 +30,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public User readUser(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found for id " + id));
+    }
+
+    @Override
+    public User updateUser(UserDTO user, long id) {
+        User existUser = readUser(id);
+        if(user.getName() != null){
+            existUser.setName(user.getName());
+        }
+        if(user.getEmail() != null){
+            existUser.setEmail(user.getEmail());
+        }
+        if(user.getPassword() != null){
+            existUser.setPassword(user.getPassword());
+        }
+        return userRepository.save(existUser);
+    }
+
+    @Override
+    public void deletUser(long id) {
+        User ouser = readUser(id);
+        userRepository.delete(ouser);
     }
 }
