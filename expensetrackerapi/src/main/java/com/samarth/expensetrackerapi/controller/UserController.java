@@ -16,13 +16,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO user){
-        ResponseEntity<User> addedUser = new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
-        //return userService.addUser(user);
-        return addedUser;
-    }
+//    @PostMapping("/register")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO user){
+//        ResponseEntity<User> addedUser = new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
+//        //return userService.addUser(user);
+//        return addedUser;
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> readUser(@PathVariable Long id){
