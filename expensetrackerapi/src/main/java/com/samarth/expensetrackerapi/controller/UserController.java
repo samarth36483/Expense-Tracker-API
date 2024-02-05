@@ -1,9 +1,8 @@
 package com.samarth.expensetrackerapi.controller;
 
-import com.samarth.expensetrackerapi.dto.UserDTO;
+import com.samarth.expensetrackerapi.dto.RegisterDTO;
 import com.samarth.expensetrackerapi.models.User;
 import com.samarth.expensetrackerapi.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +29,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody UserDTO dto, @PathVariable long id){
+    public ResponseEntity<User> updateUser(@RequestBody RegisterDTO dto, @PathVariable long id){
         return new ResponseEntity<User>(userService.updateUser(dto, id), HttpStatus.OK);
     }
 

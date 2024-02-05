@@ -1,14 +1,19 @@
 package com.samarth.expensetrackerapi.config;
 
+import com.samarth.expensetrackerapi.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Locale;
@@ -18,6 +23,8 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -31,22 +38,23 @@ public class WebSecurityConfig {
                 .build();
     }
 
-//    @Bean
-//    public SecurityFilterChain filterChain(AuthenticationManagerBuilder auth) throws Exception{
+    @Autowired
+    void registerProvider(AuthenticationManagerBuilder auth) throws Exception{
+        auth.userDetailsService(customUserDetailsService);
 //        auth.inMemoryAuthentication()
 //                .withUser("samarth").password("12345").authorities("admin")
 //                .and()
 //                .withUser("tony").password("12345").authorities("user")
 //                .and()
 //                .passwordEncoder(NoOpPasswordEncoder.getInstance());
-//    }
-    @Autowired
-    void registerProvider(AuthenticationManagerBuilder auth) throws Exception{
-        auth.inMemoryAuthentication()
-                .withUser("samarth").password("12345").authorities("admin")
-                .and()
-                .withUser("tony").password("12345").authorities("user")
-                .and()
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+//    public AuthenticationManager authenticationManagerBean(){
+//        return super.
+//    }
 }

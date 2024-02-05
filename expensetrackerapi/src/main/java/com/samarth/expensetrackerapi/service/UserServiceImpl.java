@@ -1,30 +1,32 @@
 package com.samarth.expensetrackerapi.service;
 
-import com.samarth.expensetrackerapi.dto.UserDTO;
+import com.samarth.expensetrackerapi.dto.RegisterDTO;
 import com.samarth.expensetrackerapi.exceptions.ResourceNotFoundException;
 import com.samarth.expensetrackerapi.exceptions.UserAlreadyExistsException;
 import com.samarth.expensetrackerapi.models.User;
 import com.samarth.expensetrackerapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
     @Override
-    public User addUser(UserDTO user) {
+    public User addUser(RegisterDTO user) {
         if(userRepository.existsByEmail(user.getEmail())){
             throw new UserAlreadyExistsException("Email is already registered");
         }
         User newUser = new User();
         newUser.setName(user.getName());
         newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
-        return userRepository.save(newUser);
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(newUser);
+        return newUser;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(UserDTO user, long id) {
+    public User updateUser(RegisterDTO user, long id) {
         User existUser = readUser(id);
         if(user.getName() != null){
             existUser.setName(user.getName());
@@ -42,7 +44,7 @@ public class UserServiceImpl implements UserService {
             existUser.setEmail(user.getEmail());
         }
         if(user.getPassword() != null){
-            existUser.setPassword(user.getPassword());
+            existUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         return userRepository.save(existUser);
     }
