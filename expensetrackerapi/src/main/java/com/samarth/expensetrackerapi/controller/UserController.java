@@ -15,28 +15,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @PostMapping("/register")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO user){
-//        ResponseEntity<User> addedUser = new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
-//        //return userService.addUser(user);
-//        return addedUser;
-//    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<User> readUser(@PathVariable Long id){
-        return new ResponseEntity<User>(userService.readUser(id), HttpStatus.OK);
+    @GetMapping("/profile")
+    public ResponseEntity<User> readUser(){
+        return new ResponseEntity<User>(userService.readUser(), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody RegisterDTO dto, @PathVariable long id){
-        return new ResponseEntity<User>(userService.updateUser(dto, id), HttpStatus.OK);
+    @PutMapping("/profile")
+    public ResponseEntity<User> updateUser(@RequestBody RegisterDTO dto){
+        return new ResponseEntity<User>(userService.updateUser(dto), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deactivate")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String deleteUser(@PathVariable long id){
-        userService.deletUser(id);
+    public String deleteUser(){
+        userService.deletUser();
         return "User successfully deleted";
     }
 }

@@ -6,8 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
@@ -41,12 +44,6 @@ public class WebSecurityConfig {
     @Autowired
     void registerProvider(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(customUserDetailsService);
-//        auth.inMemoryAuthentication()
-//                .withUser("samarth").password("12345").authorities("admin")
-//                .and()
-//                .withUser("tony").password("12345").authorities("user")
-//                .and()
-//                .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 
     @Bean
@@ -54,7 +51,14 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    public AuthenticationManager authenticationManagerBean(){
-//        return super.
-//    }
+    @Bean
+    public AuthenticationManager authenticationManager(
+            CustomUserDetailsService customUserDetailsService, PasswordEncoder passwordEncoder){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(customUserDetailsService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+
+        return new ProviderManager(daoAuthenticationProvider);
+    }
+
 }

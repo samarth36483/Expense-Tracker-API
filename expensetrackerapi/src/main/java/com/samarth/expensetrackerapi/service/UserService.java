@@ -6,9 +6,11 @@ import com.samarth.expensetrackerapi.models.User;
 public interface UserService {
     User addUser(RegisterDTO user);
 
-    User readUser(Long id);
+    User readUser();
 
-    User updateUser(RegisterDTO dto, long id);
+    User updateUser(RegisterDTO dto);
 
-    void deletUser(long id);
+    void deletUser();
+
+    User getLoggedInUser();
 }
